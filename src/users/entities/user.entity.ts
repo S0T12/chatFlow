@@ -1,6 +1,6 @@
 import { Column, ObjectId, ObjectIdColumn } from 'typeorm';
 
-export class User {
+export class UserEntity {
   @ObjectIdColumn()
   id: ObjectId;
 
