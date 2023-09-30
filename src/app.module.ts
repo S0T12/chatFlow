@@ -13,10 +13,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url: process.env.MONGODB_DATABASE,
+      database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
     }),
     UsersModule,
     RoomsModule,
