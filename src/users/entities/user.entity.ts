@@ -1,15 +1,28 @@
-import { Column, ObjectId, ObjectIdColumn } from 'typeorm';
+import { Entity, ObjectIdColumn, ObjectId, Column } from 'typeorm';
 
+@Entity('users')
 export class UserEntity {
   @ObjectIdColumn()
   id: ObjectId;
 
-  @Column({ type: 'varchar' })
+  @Column({ unique: true })
   username: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ unique: true })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   password: string;
+
+  @Column()
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
+  @Column({ nullable: true })
+  dateOfBirth: Date;
+
+  @Column({ nullable: true })
+  profilePictureUrl: string;
 }

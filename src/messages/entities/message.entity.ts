@@ -1,12 +1,13 @@
-import { Column, ManyToOne, ObjectId, ObjectIdColumn } from 'typeorm';
+import { Entity, ObjectIdColumn, ObjectId, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { RoomEntity } from '../../rooms/entities/room.entity';
 
+@Entity('message')
 export class MessageEntity {
-  @ObjectIdColumn({ type: 'int2' })
+  @ObjectIdColumn()
   id: ObjectId;
 
-  @Column({ type: 'varchar2' })
+  @Column()
   content: string;
 
   @ManyToOne(() => UserEntity)
@@ -15,6 +16,9 @@ export class MessageEntity {
   @ManyToOne(() => RoomEntity)
   room: RoomEntity;
 
-  @Column({ type: 'bool' })
+  @Column()
+  timestamp: Date;
+
+  @Column({ default: false })
   deleted: boolean;
 }

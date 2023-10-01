@@ -1,12 +1,35 @@
-import { Column, ObjectId, ObjectIdColumn } from 'typeorm';
+import {
+  Entity,
+  ObjectIdColumn,
+  ObjectId,
+  Column,
+  ManyToMany,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
+import { UserEntity } from '../../users/entities/user.entity';
+import { MessageEntity } from '../../messages/entities/message.entity';
 
+@Entity('rooms')
 export class RoomEntity {
-  @ObjectIdColumn({ type: 'int' })
+  @ObjectIdColumn()
   id: ObjectId;
 
-  @Column({ type: 'varchar' })
+  @Column()
   name: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   description: string;
+
+  @Column()
+  creationDate: Date;
+
+  @ManyToOne(() => UserEntity)
+  owner: UserEntity;
+
+  @ManyToMany(() => UserEntity)
+  admins: UserEntity[];
+
+  @OneToMany(() => MessageEntity, (message) => message.room)
+  messages: MessageEntity[];
 }
