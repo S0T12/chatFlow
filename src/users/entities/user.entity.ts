@@ -4,12 +4,12 @@ export class UserEntity {
   @ObjectIdColumn()
   id: ObjectId;
 
-  @Column()
+  @Column({ type: 'varchar' })
   username: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   password: string;
 }

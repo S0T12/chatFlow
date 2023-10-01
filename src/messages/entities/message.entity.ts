@@ -3,10 +3,10 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { RoomEntity } from '../../rooms/entities/room.entity';
 
 export class MessageEntity {
-  @ObjectIdColumn()
+  @ObjectIdColumn({ type: 'int2' })
   id: ObjectId;
 
-  @Column()
+  @Column({ type: 'varchar2' })
   content: string;
 
   @ManyToOne(() => UserEntity)
@@ -14,4 +14,7 @@ export class MessageEntity {
 
   @ManyToOne(() => RoomEntity)
   room: RoomEntity;
+
+  @Column({ type: 'bool' })
+  deleted: boolean;
 }

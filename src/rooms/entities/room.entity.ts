@@ -1,12 +1,12 @@
 import { Column, ObjectId, ObjectIdColumn } from 'typeorm';
 
 export class RoomEntity {
-  @ObjectIdColumn()
+  @ObjectIdColumn({ type: 'int' })
   id: ObjectId;
 
-  @Column()
+  @Column({ type: 'varchar' })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   description: string;
 }
