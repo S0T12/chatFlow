@@ -9,8 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users/entities/user.entity';
 import { MessageEntity } from './messages/entities/message.entity';
 import { RoomEntity } from './rooms/entities/room.entity';
-import { AuthModule } from './src/auth/auth/auth.module';
-import { AuthModule } from './auth/auth/auth.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
