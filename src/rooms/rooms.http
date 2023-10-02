@@ -1,17 +1,17 @@
 ### Create room
 POST http://localhost:3000/rooms
-Content-Type: application/json 
+Content-Type: application/json
 
 {
   "name": "General Chat",
-  "description": "Chat about anything!" 
+  "description": "Chat about anything!"
 }
 
 ### Get all rooms
 GET http://localhost:3000/rooms
 
-### Get room by id  
-GET http://localhost:3000/rooms/651af9c1dddc5f349d811faa
+### Get room by id
+GET http://localhost:3000/rooms/651af95251d484d03797d533
 
 ### Update room
 PATCH http://localhost:3000/rooms/651af90451d484d03797d532
