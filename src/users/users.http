@@ -16,10 +16,10 @@ Content-Type: application/json
 GET http://localhost:3000/users
 
 ### Get user by id
-GET http://localhost:3000/users/1
+GET http://localhost:3000/users/651a85eb713286ec433713bc
 
 ### Update user
-PATCH http://localhost:3000/users/1
+PATCH http://localhost:3000/users/651a85eb713286ec433713bc
 Content-Type: application/json
 
 {
@@ -27,4 +27,4 @@ Content-Type: application/json
 }
 
 ### Delete user
-DELETE http://localhost:3000/users/1
+DELETE http://localhost:3000/users/651a85eb713286ec433713bc
