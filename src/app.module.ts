@@ -6,6 +6,9 @@ import { RoomsModule } from './rooms/rooms.module';
 import { MessagesModule } from './messages/messages.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './users/entities/user.entity';
+import { MessageEntity } from './messages/entities/message.entity';
+import { RoomEntity } from './rooms/entities/room.entity';
 
 @Module({
   imports: [
@@ -14,7 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       type: 'mongodb',
       url: process.env.MONGODB_DATABASE,
       database: process.env.DATABASE_NAME,
-      autoLoadEntities: true,
+      entities: [UserEntity, MessageEntity, RoomEntity],
       synchronize: true,
     }),
     UsersModule,
