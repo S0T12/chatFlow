@@ -25,7 +25,9 @@ export class AuthService {
     if (!validateUser) {
       throw new UnauthorizedException('Username or password incorrect');
     }
+
     const payload = { username: username, sub: username };
-    return { authToken: this.jwtService.sign(payload) };
+    const token = await this.jwtService.signAsync(payload);
+    return { authToken: token };
   }
 }
