@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MessagesModule } from './messages/messages.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users/entities/user.entity';
 import { MessageEntity } from './messages/entities/message.entity';
@@ -13,13 +13,16 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: process.env.MONGODB_DATABASE,
-      database: process.env.DATABASE_NAME,
-      entities: [UserEntity, MessageEntity, RoomEntity],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mongodb',
+        url: configService.get('MONGODB_URI'),
+        database: configService.get('MONGODB_DATABASE'),
+        entities: [UserEntity, RoomEntity, MessageEntity],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
     RoomsModule,
