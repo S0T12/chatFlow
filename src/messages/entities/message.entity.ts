@@ -10,7 +10,7 @@ export class MessageEntity {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (user) => user.username)
   sender: UserEntity;
 
   @ManyToOne(() => RoomEntity)
