@@ -6,6 +6,7 @@ import {
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { ObjectId } from 'typeorm';
 
 @WebSocketGateway()
 export class MessagesGateway {
@@ -22,7 +23,7 @@ export class MessagesGateway {
   }
 
   @SubscribeMessage('findOneMessage')
-  findOne(@MessageBody() id: number) {
+  findOne(@MessageBody() id: ObjectId) {
     return this.messagesService.findOne(id);
   }
 
