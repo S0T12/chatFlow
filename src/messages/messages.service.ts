@@ -1,26 +1,61 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { MessageEntity } from './entities/message.entity';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import Redis from 'ioredis';
 
 @Injectable()
 export class MessagesService {
-  create(createMessageDto: CreateMessageDto) {
-    return 'This action adds a new message';
+  private redisClient: Redis;
+
+  constructor(
+    @InjectRepository(MessageEntity)
+    private messageRepo: Repository<MessageEntity>,
+  ) {
+    this.redisClient = new Redis();
   }
 
-  findAll() {
-    return `This action returns all messages`;
+  async create(createMessageDto: CreateMessageDto) {
+    const message = await this.messageRepo.create(createMessageDto);
+    await this.messageRepo.save(message);
+
+    await this.redisClient.del('messages');
+
+    return message;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} message`;
+  async findAll() {
+    let messages = await this.redisClient.get('messages');
+
+    if (!messages) {
+      messages = JSON.stringify(await this.messageRepo.find());
+      await this.redisClient.set('messages', messages, 'EX', 20);
+    } else {
+      messages = JSON.parse(messages);
+    }
+
+    return messages;
   }
 
-  update(id: number, updateMessageDto: UpdateMessageDto) {
-    return `This action updates a #${id} message`;
+  async findOne(id: ObjectId) {
+    return await this.messageRepo.findOne({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} message`;
+  async update(id: number, updateMessageDto: UpdateMessageDto) {
+    await this.messageRepo.update(id, updateMessageDto);
+
+    await this.redisClient.del('messages');
+
+    return { updated: true };
+  }
+
+  async remove(id: number) {
+    await this.messageRepo.delete(id);
+
+    await this.redisClient.del('messages');
+
+    return { deleted: true };
   }
 }
