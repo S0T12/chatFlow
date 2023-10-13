@@ -4,7 +4,8 @@ Content-Type: application/json
 
 {
   "name": "General Chat",
-  "description": "Chat about anything!"
+  "description": "Chat about anything!",
+  "link": "world"
 }
 
 ### Get all rooms

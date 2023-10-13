@@ -3,7 +3,7 @@ import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoomEntity } from './entities/room.entity';
-import { ObjectId, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RoomsService {
@@ -20,15 +20,15 @@ export class RoomsService {
     return this._roomRepository.find();
   }
 
-  findOne(id: ObjectId) {
-    return this._roomRepository.findOne({ where: { id } });
+  findOne(link: string) {
+    return this._roomRepository.findOne({ where: { link: link } });
   }
 
-  update(id: ObjectId, updateRoomDto: UpdateRoomDto) {
-    return this._roomRepository.update(id, updateRoomDto);
+  update(link: string, updateRoomDto: UpdateRoomDto) {
+    return this._roomRepository.update(link, updateRoomDto);
   }
 
-  remove(id: ObjectId) {
-    return this._roomRepository.delete(id);
+  remove(link: string) {
+    return this._roomRepository.delete(link);
   }
 }

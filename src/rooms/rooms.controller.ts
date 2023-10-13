@@ -10,7 +10,6 @@ import {
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { ObjectId } from 'typeorm';
 
 @Controller('rooms')
 export class RoomsController {
@@ -27,17 +26,17 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: ObjectId) {
-    return this.roomsService.findOne(id);
+  findOne(@Param('link') link: string) {
+    return this.roomsService.findOne(link);
   }
 
   @Patch(':id')
-  update(@Param('id') id: ObjectId, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.update(id, updateRoomDto);
+  update(@Param('link') link: string, @Body() updateRoomDto: UpdateRoomDto) {
+    return this.roomsService.update(link, updateRoomDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: ObjectId) {
-    return this.roomsService.remove(id);
+  remove(@Param('link') link: string) {
+    return this.roomsService.remove(link);
   }
 }

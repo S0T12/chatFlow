@@ -3,17 +3,18 @@ import {
   ObjectIdColumn,
   ObjectId,
   Column,
-  ManyToMany,
-  OneToMany,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
-import { MessageEntity } from '../../messages/entities/message.entity';
 
 @Entity('rooms')
 export class RoomEntity {
   @ObjectIdColumn()
   id: ObjectId;
+
+  @Column({ unique: true })
+  link: string;
 
   @Column()
   name: string;
@@ -25,11 +26,8 @@ export class RoomEntity {
   creationDate: Date;
 
   @ManyToOne(() => UserEntity)
-  owner: UserEntity;
+  createdBy: UserEntity;
 
   @ManyToMany(() => UserEntity)
-  admins: UserEntity[];
-
-  @OneToMany(() => MessageEntity, (message) => message.room)
-  messages: MessageEntity[];
+  members: UserEntity[];
 }
