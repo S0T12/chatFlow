@@ -2,7 +2,7 @@ import { Entity, ObjectIdColumn, ObjectId, Column, ManyToOne } from 'typeorm';
 import { UserEntity } from '../../users/entities/user.entity';
 import { RoomEntity } from '../../rooms/entities/room.entity';
 
-@Entity('message')
+@Entity({ name: 'messages' })
 export class MessageEntity {
   @ObjectIdColumn()
   id: ObjectId;
@@ -10,15 +10,12 @@ export class MessageEntity {
   @Column()
   content: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.username)
+  @ManyToOne(() => UserEntity)
   sender: UserEntity;
 
-  @ManyToOne(() => RoomEntity)
+  @ManyToOne(() => RoomEntity, (room) => room.link)
   room: RoomEntity;
 
   @Column()
   timestamp: Date;
-
-  @Column({ default: false })
-  deleted: boolean;
 }
