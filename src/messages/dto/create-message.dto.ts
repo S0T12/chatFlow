@@ -1,4 +1,4 @@
-import { IsDate, IsMongoId, IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 export class CreateMessageDto {
   @IsNotEmpty()
@@ -8,8 +8,5 @@ export class CreateMessageDto {
   senderUsername: string;
 
   @IsMongoId()
-  roomId: string;
-
-  @IsDate()
-  timestamp: Date;
+  roomLink: string;
 }

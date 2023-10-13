@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { MessageEntity } from './entities/message.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from '../users/users.module';
+import { RoomsModule } from '../rooms/rooms.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
+    RoomsModule,
   ],
   providers: [MessagesGateway, MessagesService],
 })
