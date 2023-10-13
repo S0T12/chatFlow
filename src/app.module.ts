@@ -20,6 +20,8 @@ import { AuthModule } from './auth/auth.module';
         type: 'mongodb',
         url: configService.get('MONGODB_URI'),
         database: configService.get('MONGODB_DATABASE'),
+        autoLoadEntities: true,
+        logging: true,
         entities: [UserEntity, RoomEntity, MessageEntity],
         synchronize: true,
       }),

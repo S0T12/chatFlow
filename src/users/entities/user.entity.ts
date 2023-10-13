@@ -1,4 +1,13 @@
-import { Entity, ObjectIdColumn, ObjectId, Column } from 'typeorm';
+import {
+  Entity,
+  ObjectIdColumn,
+  ObjectId,
+  Column,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
+import { RoomEntity } from '../../rooms/entities/room.entity';
+import { MessageEntity } from '../../messages/entities/message.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -25,4 +34,10 @@ export class UserEntity {
 
   @Column({ nullable: true })
   profilePictureUrl: string;
+
+  @ManyToMany(() => RoomEntity)
+  rooms: RoomEntity[];
+
+  @OneToMany(() => MessageEntity, (message) => message.sender)
+  messages: MessageEntity[];
 }
