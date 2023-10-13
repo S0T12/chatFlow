@@ -7,5 +7,9 @@ export class CreateRoomDto {
 
   @IsNotEmpty()
   @IsString()
+  link: string;
+
+  @IsNotEmpty()
+  @IsString()
   description: string;
 }
