@@ -15,11 +15,11 @@ Content-Type: application/json
 ### Get All
 GET http://localhost:3000/users
 
-### Get user by id
-GET http://localhost:3000/users/651a85eb713286ec433713bc
+### Get user by username
+GET http://localhost:3000/users/john_doe
 
 ### Update user
-PATCH http://localhost:3000/users/651a85eb713286ec433713bc
+PATCH http://localhost:3000/users/john_doe
 Content-Type: application/json
 
 {
@@ -27,4 +27,4 @@ Content-Type: application/json
 }
 
 ### Delete user
-DELETE http://localhost:3000/users/651a869f713286ec433713bd
+DELETE http://localhost:3000/users/john_doe
