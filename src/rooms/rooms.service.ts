@@ -1,34 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { RoomEntity } from './entities/room.entity';
-import { Repository } from 'typeorm';
+import { Room } from './schemas/room.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class RoomsService {
-  constructor(
-    @InjectRepository(RoomEntity)
-    private readonly _roomRepository: Repository<RoomEntity>,
-  ) {}
+  constructor(@InjectModel('rooms') private readonly roomModel: Model<Room>) {}
+
   async create(createRoomDto: CreateRoomDto) {
-    const room = await this._roomRepository.create(createRoomDto);
-    return this._roomRepository.save(room);
+    const createdRoom = new this.roomModel(createRoomDto);
+    return await createdRoom.save();
   }
 
-  findAll() {
-    return this._roomRepository.find();
+  async findAll() {
+    return await this.roomModel.find().exec();
   }
 
-  findOne(link: string) {
-    return this._roomRepository.findOne({ where: { link: link } });
+  async findOne(link: string) {
+    const room = await this.roomModel.findOne({ link }).exec();
+    if (!room) {
+      throw new NotFoundException(`Room with link ${link} not found`);
+    }
+    return room;
   }
 
-  update(link: string, updateRoomDto: UpdateRoomDto) {
-    return this._roomRepository.update(link, updateRoomDto);
+  async update(link: string, updateRoomDto: UpdateRoomDto) {
+    const updatedRoom = await this.roomModel
+      .findOneAndUpdate({ link }, updateRoomDto, { new: true })
+      .exec();
+    if (!updatedRoom) {
+      throw new NotFoundException(`Room with link ${link} not found`);
+    }
+    return updatedRoom;
   }
 
-  remove(link: string) {
-    return this._roomRepository.delete(link);
+  async remove(link: string) {
+    const deletedRoom = await this.roomModel.findOneAndDelete({ link }).exec();
+    if (!deletedRoom) {
+      throw new NotFoundException(`Room with link ${link} not found`);
+    }
+    return { deleted: true };
   }
 }
