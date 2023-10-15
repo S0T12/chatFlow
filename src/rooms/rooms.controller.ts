@@ -25,17 +25,17 @@ export class RoomsController {
     return this.roomsService.findAll();
   }
 
-  @Get(':id')
+  @Get(':link')
   findOne(@Param('link') link: string) {
     return this.roomsService.findOne(link);
   }
 
-  @Patch(':id')
+  @Patch(':link')
   update(@Param('link') link: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(link, updateRoomDto);
   }
 
-  @Delete(':id')
+  @Delete(':link')
   remove(@Param('link') link: string) {
     return this.roomsService.remove(link);
   }

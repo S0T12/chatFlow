@@ -7,7 +7,6 @@ import {
 import { MessagesService } from './messages.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
-import { ObjectId } from 'typeorm';
 import { Server } from 'socket.io';
 
 @WebSocketGateway(8081)
@@ -19,36 +18,50 @@ export class MessagesGateway {
 
   @SubscribeMessage('createMessage')
   async create(@MessageBody() createMessageDto: CreateMessageDto) {
-    console.log(
-      'Received createMessage event with createMeesageDto:',
-      createMessageDto,
-    );
-    const message = await this.messagesService.create(createMessageDto);
-
-    if (message) {
+    try {
+      const message = await this.messagesService.create(createMessageDto);
       this.server.emit('createMessage', message);
-    } else {
-      this.server.emit('createMessage', 'Something is wrong');
+    } catch (error) {
+      this.server.emit('createMessage', { error: error.message });
     }
   }
 
   @SubscribeMessage('findAllMessages')
-  findAll() {
-    this.server.emit('findAllMessages', this.messagesService.findAll());
+  async findAll() {
+    const messages = await this.messagesService.findAll();
+    this.server.emit('findAllMessages', messages);
   }
 
   @SubscribeMessage('findOneMessage')
-  findOne(@MessageBody() id: ObjectId) {
-    return this.messagesService.findOne(id);
+  async findOne(@MessageBody() id: string) {
+    const message = await this.messagesService.findOne(id);
+    if (message) {
+      this.server.emit('findOneMessage', message);
+    } else {
+      this.server.emit('findOneMessage', { error: 'Message not found' });
+    }
   }
 
   @SubscribeMessage('updateMessage')
-  update(@MessageBody() updateMessageDto: UpdateMessageDto) {
-    return this.messagesService.update(updateMessageDto.id, updateMessageDto);
+  async update(@MessageBody() updateMessageDto: UpdateMessageDto) {
+    try {
+      const updatedMessage = await this.messagesService.update(
+        String(updateMessageDto.id),
+        updateMessageDto,
+      );
+      this.server.emit('updateMessage', updatedMessage);
+    } catch (error) {
+      this.server.emit('updateMessage', { error: error.message });
+    }
   }
 
   @SubscribeMessage('removeMessage')
-  remove(@MessageBody() id: number) {
-    return this.messagesService.remove(id);
+  async remove(@MessageBody() id: string) {
+    try {
+      const result = await this.messagesService.remove(id);
+      this.server.emit('removeMessage', result);
+    } catch (error) {
+      this.server.emit('removeMessage', { error: error.message });
+    }
   }
 }

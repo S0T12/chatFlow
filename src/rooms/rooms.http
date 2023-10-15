@@ -12,10 +12,10 @@ Content-Type: application/json
 GET http://localhost:3000/rooms
 
 ### Get room by id
-GET http://localhost:3000/rooms/651af95251d484d03797d533
+GET http://localhost:3000/rooms/world
 
 ### Update room
-PATCH http://localhost:3000/rooms/651af90451d484d03797d532
+PATCH http://localhost:3000/rooms/world
 Content-Type: application/json
 
 {
@@ -23,4 +23,4 @@ Content-Type: application/json
 }
 
 ### Delete room
-DELETE http://localhost:3000/rooms/651af90451d484d03797d532
+DELETE http://localhost:3000/rooms/world

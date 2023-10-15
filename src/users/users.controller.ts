@@ -32,7 +32,7 @@ export class UsersController {
 
   @Patch(':username')
   update(
-    @Param('uesrname') username: string,
+    @Param('uesername') username: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.update(username, updateUserDto);

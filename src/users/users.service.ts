@@ -1,35 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './schemas/user.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(UserEntity)
-    private readonly _userRepository: Repository<UserEntity>,
-  ) {}
+  constructor(@InjectModel('users') private readonly userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = await this._userRepository.create(createUserDto);
-    return this._userRepository.save(user);
+    try {
+      const createdUser = new this.userModel(createUserDto);
+      return await createdUser.save();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  findAll() {
-    return this._userRepository.find();
+  async findAll() {
+    return await this.userModel.find().exec();
   }
 
-  findOne(username: string) {
-    return this._userRepository.findOne({ where: { username: username } });
+  async findOne(username: string) {
+    const user = await this.userModel.findOne({ username }).exec();
+    if (!user) {
+      throw new NotFoundException(`User with username ${username} not found`);
+    }
+    return user;
   }
 
-  update(username: string, updateUserDto: UpdateUserDto) {
-    return this._userRepository.update(username, updateUserDto);
+  async update(username: string, updateUserDto: UpdateUserDto) {
+    const updatedUser = await this.userModel
+      .findOneAndUpdate({ username }, updateUserDto, { new: true })
+      .exec();
+    if (!updatedUser) {
+      throw new NotFoundException(`User with username ${username} not found`);
+    }
+    return updatedUser;
   }
 
-  remove(username: string) {
-    return this._userRepository.delete(username);
+  async remove(username: string) {
+    const deletedUser = await this.userModel
+      .findOneAndDelete({ username })
+      .exec();
+    if (!deletedUser) {
+      throw new NotFoundException(`User with username ${username} not found`);
+    }
+    return { deleted: true };
   }
 }

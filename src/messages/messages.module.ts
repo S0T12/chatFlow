@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessagesGateway } from './messages.gateway';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { MessageEntity } from './entities/message.entity';
 import { UsersModule } from '../users/users.module';
 import { RoomsModule } from '../rooms/rooms.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MessageSchema } from './schemas/message.schema';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([MessageEntity]),
+    MongooseModule.forFeature([{ name: 'messages', schema: MessageSchema }]),
     UsersModule,
     RoomsModule,
   ],
