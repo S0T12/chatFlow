@@ -1,26 +1,19 @@
-### Create message
-POST http://localhost:3000/messages
-Content-Type: application/json
+### This document is not work, because it's webSocket, but you can use of postman for test.
 
+### Create message(createMessage event)
 {
   "content": "Hello world!",
   "senderUsername": "john_doe",
   "roomLink": "world"
 }
 
-### Get all messages
-GET http://localhost:3000/messages
+### Get all messages(findAllMessages event)
 
-### Get message by id
-GET http://localhost:3000/messages/63f62c3a20c086f09c275525
+### Get message by id(findOneMessage even)
 
-### Update message
-PATCH http://localhost:3000/messages/63f62c3a20c086f09c275525
-Content-Type: application/json
-
+### Update message(updateMessage event)
 {
   "content": "Updated message content"
 }
 
-### Delete message
-DELETE http://localhost:3000/messages/63f62c3a20c086f09c275526
+### Delete message(removeMessage event)
