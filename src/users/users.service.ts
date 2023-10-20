@@ -11,6 +11,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      // TODO: use of bcrypt for password.
       const createdUser = new this.userModel(createUserDto);
       return await createdUser.save();
     } catch (error) {
