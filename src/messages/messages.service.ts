@@ -67,7 +67,10 @@ export class MessagesService {
   }
 
   async remove(id: string) {
-    const deletedMessage = await this.messageModel.findByIdAndDelete(id).exec();
+    const messageId = new Types.ObjectId(id);
+    const deletedMessage = await this.messageModel
+      .findByIdAndDelete(messageId)
+      .exec();
     if (!deletedMessage) {
       throw new NotFoundException(`Message with id ${id} not found`);
     }
