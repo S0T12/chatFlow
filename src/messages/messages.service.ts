@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { Message } from './schemas/message.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UsersService } from '../users/users.service';
 import { RoomsService } from '../rooms/rooms.service';
@@ -46,7 +46,8 @@ export class MessagesService {
   }
 
   async findOne(id: string) {
-    const message = await this.messageModel.findOne({ _id: id }).exec();
+    const objectId = new Types.ObjectId(id);
+    const message = await this.messageModel.findOne({ _id: objectId }).exec();
     if (!message) {
       throw new NotFoundException(`Message with id ${id} not found`);
     }
